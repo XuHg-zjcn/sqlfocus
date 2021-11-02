@@ -37,18 +37,18 @@ class SQLTableBase:
         self._colums = [" ".join(var) for var in schema]
         self.__load()
 
-        return await self.execute(CREATE_SQL.format(
+        return self.execute(CREATE_SQL.format(
             name=self._name,
             exists="IF NOT EXISTS " if exists else "",
             vars=", ".join(self._colums)
         ))
 
-    async def execute(self, sql):
+    def execute(self, sql):
         logger.debug(sql)
-        return await self._conn.execute(sql)
+        return self._conn.execute(sql)
 
-    async def commit(self):
-        return await self._conn.commit()
+    def commit(self):
+        return self._conn.commit()
 
     @sqlfocus.fetch(one=True)
     @sqlfocus.execute
